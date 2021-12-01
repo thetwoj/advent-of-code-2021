@@ -16,11 +16,11 @@ def count_increases(measurements):
     return increases
 
 
-def sliding_window_increases(meansurements, window_size):
-    previous = sum(meansurements[0:window_size])
+def sliding_window_increases(measurements, window_size):
+    previous = sum(measurements[0:window_size])
     increases = 0
-    for x in range(1, len(meansurements)):
-        current = sum(meansurements[x:x+window_size])
+    for x in range(1, len(measurements)):
+        current = sum(measurements[x:x+window_size])
         if current > previous:
             increases += 1
         previous = current
