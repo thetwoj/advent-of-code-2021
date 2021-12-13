@@ -1,5 +1,3 @@
-import pprint
-
 class Display:
     def __init__(self):
         self.signals_to_letters = {
