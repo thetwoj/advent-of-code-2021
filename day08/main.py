@@ -33,13 +33,6 @@ def get_input(filename):
         return entries
 
 
-def map_crabs(crab_positions):
-    crabs = {x: 0 for x in range(min(crab_positions), max(crab_positions) + 1)}
-    for cp in crab_positions:
-        crabs[cp] += 1
-    return crabs
-
-
 def unique_output_digits(entries):
     unique_digits = 0
     for entry in entries:
