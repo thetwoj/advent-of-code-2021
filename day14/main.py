@@ -97,6 +97,8 @@ def main():
     print(f"diff between most and least frequent is {high - low}")
     print()
 
+    # this series takes about 1.5 minutes, had to
+    # add progress bars to keep myself patient
     polymer, rules = get_input("input")
     shortcuts = create_shortcuts(rules)
     high, low = run_steps_via_shortcuts(polymer, shortcuts)
