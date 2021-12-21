@@ -40,27 +40,30 @@ def create_shortcuts(rules):
     return shortcuts
 
 
-def run_steps_via_shortcuts(polymer, shortcuts, steps=2):
-    step_count = 0
+def run_steps_via_shortcuts(polymer, shortcuts):
     letter_counts = defaultdict(int)
     cached_letter_counts = {}
-    while steps > step_count:
-        next_polymer = ""
-        for x in tqdm(range(len(polymer) - 1)):
-            current_pair = polymer[x:x + 2]
-            if step_count > 0:
-                if current_pair not in cached_letter_counts:
-                    cached_letter_counts[current_pair] = count_letters(shortcuts[current_pair])
-                letter_counts = combine_counts(letter_counts, cached_letter_counts[current_pair])
-                if x != len(polymer) - 2:
-                    letter_counts[shortcuts[current_pair][-1:]] -= 1
-            else:
-                if x == len(polymer) - 2:
-                    next_polymer += shortcuts[current_pair]
-                else:
-                    next_polymer += shortcuts[current_pair][:-1]
-        polymer = next_polymer
-        step_count += 1
+    next_polymer = ""
+    # get the polymer string after 20 steps from the pre-computed shortcuts
+    for x in tqdm(range(len(polymer) - 1)):
+        current_pair = polymer[x:x + 2]
+        if x == len(polymer) - 2:
+            next_polymer += shortcuts[current_pair]
+        else:
+            next_polymer += shortcuts[current_pair][:-1]
+    polymer = next_polymer
+
+    # from the 20th step polymer string start caching the letter counts
+    # of the 40th step by using the shortcuts again, don't need to actually
+    # compile the polymer string of the 40th step to get the letter counts
+    for x in tqdm(range(len(polymer) - 1)):
+        current_pair = polymer[x:x + 2]
+        if current_pair not in cached_letter_counts:
+            cached_letter_counts[current_pair] = count_letters(shortcuts[current_pair])
+        letter_counts = combine_counts(letter_counts, cached_letter_counts[current_pair])
+        if x != len(polymer) - 2:
+            letter_counts[shortcuts[current_pair][-1:]] -= 1
+
     return find_high_low(letter_counts)
 
 
